@@ -27,14 +27,14 @@ public class Controller {
                                @RequestParam(name = "end") @DateTimeFormat(pattern = pattern) LocalDateTime end,
                                @RequestParam(name = "uris", required = false, defaultValue = "") List<String> uris,
                                @RequestParam(name = "unique", required = false, defaultValue = "false") Boolean unique) {
-        log.info("Exception in getHit with start {} and end {} and List<uris> {} unique {}", start, end, uris, unique);
+        log.info("Event in getHit with start {} and end {} and List<uris> {} unique {}", start, end, uris, unique);
         return service.getStats(start, end, uris, unique);
     }
 
     @PostMapping("/hit")
     @ResponseStatus(HttpStatus.CREATED)
     public AnswerDTO createStat(@RequestBody @Valid StatDTO statDTO) {
-        log.info("Exception in createStat with statDto {}", statDTO);
+        log.info("Event in createStat with statDto {}", statDTO);
         return service.createStat(statDTO);
     }
 }
