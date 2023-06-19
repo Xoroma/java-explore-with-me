@@ -1,6 +1,7 @@
 package ru.practicum.ewm.client;
 
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +21,13 @@ public class StatClient {
     private final WebClient client;
     private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
+    @Value("${server.port}")
+    private String port;
+
     public StatClient() {
-        String url = "http://localhost:9090";
+
+        String url = "http://localhost:" + port;
+
         this.client = WebClient.builder()
                 .baseUrl(url)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
