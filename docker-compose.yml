@@ -1,54 +1,48 @@
-version: '3.8'
-
+version: '3.1'
 services:
-
-  ewm-service:
-    build: ewm
-    image: image_ewm
-    container_name: container_ewm
-    ports:
-      - "8080:8080"
-    depends_on:
-      - ewm-db
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://ewm-db:5432/ewm
-      - STATS_URL=http://stats-server:9090
-      - POSTGRES_DB=ewm
-      - POSTGRES_USER=root
-      - APP_NAME=ewm-main-service
-      - POSTGRES_PASSWORD=root
-
-  ewm-db:
-    image: postgres:14-alpine
-    container_name: container_ewm_db
-    ports:
-      - "6542:5432"
-    environment:
-      - POSTGRES_DB=ewm
-      - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=root
-
   stats-server:
-    build: stats
-    image: image_stats
-    container_name: container_stats
+    build: ./stats/service
     ports:
       - "9090:9090"
     depends_on:
       - stats-db
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://stats-db:5432/explore
-      - POSTGRES_DB=explore
-      - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=root
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://stats-db:5432/exploreWithMe
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=iamroot
 
 
   stats-db:
     image: postgres:14-alpine
-    container_name: container_stats_db
+    ports:
+      - "6542:5432"
+    environment:
+      - POSTGRES_DB=exploreWithMe
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=iamroot
+
+
+  ewm-service:
+    build: ./ewmService/
+    ports:
+      - "8080:8080"
+    depends_on:
+      - ewm-db
+
+    environment:
+      - STATS_SERVER_URL=http://stats-server:9090
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://ewm-db:5432/ewmService
+      - SPRING.DATASOURCE.USERNAME=postgres
+      - SPRING.DATASOURCE.PASSWORD=iamroot
+    image: ewm_service
+    container_name: ewm-service
+
+  ewm-db:
+    image: postgres:14-alpine
     ports:
       - "6541:5432"
     environment:
-      - POSTGRES_DB=explore
-      - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=ewmService
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=iamroot
+
