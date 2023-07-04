@@ -22,6 +22,7 @@ public class StatsClient {
     private final RestTemplate restTemplate;
     private final String statsServer;
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private static final LocalDateTime START_DATE_TIME = LocalDateTime.of(2000, 1, 1, 0, 0, 0);
 
     @Autowired
     public StatsClient(@Value("${stats-server.url}") String statsServer, RestTemplateBuilder builder) {
@@ -30,8 +31,7 @@ public class StatsClient {
     }
 
     public ResponseEntity<List<StatsDtoForView>> getStats(List<String> uris) {
-        return getStats(LocalDateTime.of(2000, 1, 1, 0, 0, 0),
-                LocalDateTime.now(), uris, false);
+        return getStats(START_DATE_TIME, LocalDateTime.now(), uris, false);
     }
 
     public ResponseEntity<List<StatsDtoForView>> getStats(LocalDateTime start, LocalDateTime end,

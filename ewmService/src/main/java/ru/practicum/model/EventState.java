@@ -21,6 +21,6 @@ public enum EventState {
         if (states == null || states.isEmpty()) {
             return result;
         }
-        return states.stream().map(EventState::valueOf).collect(Collectors.toList());
+        return states.stream().map(s -> EventState.valueOf(s.toUpperCase())).collect(Collectors.toList());
     }
 }
