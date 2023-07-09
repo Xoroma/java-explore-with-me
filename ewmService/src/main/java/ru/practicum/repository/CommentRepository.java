@@ -3,11 +3,13 @@ package ru.practicum.repository;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 import ru.practicum.dto.comment.CommentEvent;
 import ru.practicum.model.Comment;
 
 import java.util.List;
 
+@Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
     @Query("select count(c) from Comment c where c.event.id = ?1")
     Long countCommentsForEvent(Long id);
